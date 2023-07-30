@@ -1,0 +1,14 @@
+name: Release
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: docker build . -t dockerkr12/nest-app
+    - run: echo "${{secrets.DOCKERHUB_TOKEN}}" | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
+    - run: docker push dockerkr12/nest-app
